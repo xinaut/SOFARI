@@ -1,0 +1,7 @@
+real_data_process.R： process the raw data from the file 2015-04.csv and obtain X, Y. Then calculate the predicition loss of various methods.
+
+
+infer of real data.R: do inference according to the obtained X and Y
+
+
+plot_realdata.R: plot the bar plot

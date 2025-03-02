@@ -1,0 +1,28 @@
+result_sum.R: the main function of simulation, containing the parallel computing and output the simulation results
+
+
+main of secure and sofar.R: the main function of two simulation examples in SOFARI paper: secure (simulation example 1), sofar (simulation example 2)
+
+
+func_nearly.R: containing functions to compute the distribution of strongly orthogonal factors
+
+
+func_weakly.R: containing functions to compute the distribution of weakly orthogonal factors
+
+
+sim.R:  Estimate the covariance matrix of random error (E of Y = XC + E)
+
+#method from: Cai, T. and W. Liu (2011). Adaptive thresholding for sparse covariance matrix estimation. Journal of the American Statistical Association 106, 672–684.
+
+
+STRS.R:  Estimate rank of multivariate response regression models
+
+#method from:  Bing, X. and M. H. Wegkamp (2019). Adaptive estimation of the rank of the coefficient matrix in high-dimensional multivariate response regression models. The Annals of Statistics 47, 3157–3184.
+
+
+helpers.nodewise.R: Estimate the precision matrix
+
+#method from: Meinshausen, N. and P. Buhlmann (2006). High-dimensional graphs and variable selection with the lasso. The Annals of Statistics 34, 1436–1462.
+
+
+
