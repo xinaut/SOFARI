@@ -17,7 +17,6 @@ start <- (proc.time())[3][[1]]
 no_cores <- detectCores(no_cores)-4
 cl <- makeCluster(no_cores)
 registerDoParallel(cl)
-#clusterEvalQ(cl, library(rrpack,MASS))
 #set.seed(1235)
 set.seed(12345)
 iter = 1000
