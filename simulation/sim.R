@@ -1,5 +1,5 @@
-
-sim <- function(p = p, n = n, delta = 2, thresholding = 'hard', data, cov_true) {
+#method from: Cai, T. and W. Liu (2011). Adaptive thresholding for sparse covariance matrix estimation. Journal of the American Statistical Association 106, 672–684.
+sim <- function(p = p, n = n, delta = 2, thresholding = 'hard', data, cov_true) {#cov_true: not used
   # compute theta
   get.theta <- function(i = i, j = j) {  
     X_bar_i <- mean(data[, i]);

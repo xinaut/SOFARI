@@ -4,6 +4,7 @@ source("func_weakly.R")
 source("sim.R")
 source("STRS.R")
 source("helpers.nodewise.R")
+source("functions.R")
 library(rrpack)
 library(secure)
 library(MASS)
@@ -20,7 +21,7 @@ registerDoParallel(cl)
 #clusterEvalQ(cl, library(rrpack,MASS))
 #set.seed(1235)
 set.seed(12345)
-iter = 300
+iter = 1000
 res <- foreach( ii = 1:iter, .combine = 'rbind', .errorhandling = "remove",
                 .packages = c("rrpack", "MASS","glmnet","parallel"))%dopar% pare_sofar_nonsparse(ii)
 stopCluster(cl)
@@ -35,7 +36,7 @@ res_nonsofar <- temp_res
 start <- (proc.time())[3][[1]]
 set.seed(1235)
 res <- list()
-iter <- 100
+iter <- 1000
 for (ii in 1:iter) {
   #result <- pare_secure(ii)
   result <- pare_sofar_nonsparse(ii)

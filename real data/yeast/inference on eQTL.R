@@ -52,28 +52,10 @@ bhq_adj_p <- function(uk, varuk, q = 0.1, n, p){
 }
 
 
-load(file = "real20230912.RData")
-#estimate
-X <- read.csv("final_XX.csv")
-Y <- read.csv("final_YY.csv")
-X <- as.matrix(X); Y <- as.matrix(Y)
-dim(X)
-dim(Y)
 
-
-#####estimate and inference from the all data#####
-#X <- X0; Y<-Y0
-est_rank <- STRS(Y, X, type = "STRS-MC", rep_MC = 200, rank_tol = 1e-2, C = 2.01); est_rank
-
-n <- dim(X)[1]; p <- dim(X)[2]; q <- dim(Y)[2]
-r = est_rank #r = 3
-fit1 <- sofar(Y, X, ic.type = "BIC", nrank = r,
-              control = list(methodA = "adlasso", methodB = "adlasso",
-                             nlam = 200, lam.max.factor = 1500, lam.min.factor = 1e-12,
-                             penA = TRUE, penB = TRUE, penD = TRUE, epsilon = 1e-6
-              ), screening = FALSE);  summary(fit1)
-fit1$lam.id
-
+load("yeast2.RData")
+#####inference from the all data#####
+#fit1 from init_code
 Ur = fit1$U; Dr = fit1$D; V = fit1$V;
 dU = Ur%*%diag(Dr)
 r = fit1$rank
@@ -84,59 +66,32 @@ E_est = Y - X%*%C
 Sigmae_null = matrix(0, q, q) #no meaning
 obj_sigmae <-  sim(p = q, n = n, delta = 2, thresholding = 'al', data = E_est, cov_true = Sigmae_null)
 Sigmae <- obj_sigmae$cov_est
-write.csv(Sigmae, file = "final_Sigmae.csv", row.names = F)
-#Sigmae <- t(E_est)%*%E_est/q
+
 
 Xsigma <- t(X)%*%X/n
 #estimate the precision matrix
-obj<- score.nodewiselasso(X, wantTheta = TRUE,
-                          verbose = FALSE,
-                          lambdaseq = "quantile",
-                          parallel = FALSE,
-                          ncores = 12,
-                          oldschool = FALSE,
-                          lambdatuningfactor = 1,
-                          cv.verbose = FALSE,
-                          do.ZnZ = TRUE)
-Theta = obj$out
+# obj<- score.nodewiselasso(X, wantTheta = TRUE,
+#                           verbose = FALSE,
+#                           lambdaseq = "quantile",
+#                           parallel = FALSE,
+#                           ncores = 12,
+#                           oldschool = FALSE,
+#                           lambdatuningfactor = 1,
+#                           cv.verbose = FALSE,
+#                           do.ZnZ = TRUE)
+# Theta = obj$out
 #write.csv(Theta, file = "finalXY_theta.csv", row.names = F)
 Theta <- InverseLinfty(Xsigma, n,  resol=1.3, maxiter=100, threshold=1e-6)
-asd = cv.glasso_clean(X,0)
+#asd = cv.glasso_clean(X,0)
 Theta = asd$wi
 # asd = CVglasso(X,  cores = 5)
-# Theta= asd$Omega 
-# regfactor = "log"
-# npermu = 1
-# sis.use = 0
-# bia.cor = 0
-# obj = isee(X, regfactor, 5, 0, 0) 
-# if (bia.cor == 1){
-#   # ISEE with bias correction
-#   Omega = obj$Omega.isee.c
-# } else {
-#   #  # ISEE with no bias correction
-#   Omega = obj$Omega.isee
-# }
 
 norm(diag(p)- Xsigma%*%Theta, "M")
-write.csv(Theta, file = "final_theta.csv", row.names = F)
-Theta_weig_vard = Theta
-#############read data#############
+
 
 n <- dim(X)[1]; p <- dim(X)[2]; q <- dim(Y)[2]
 r = 3
 Xsigma <- t(X)%*%X/n
-Sigmae <-  read.csv("final_Sigmae.csv")
-Sigmae <- as.matrix(Sigmae)
-
-Theta <- read.csv("final_theta.csv")
-Theta <- as.matrix(Theta)
-
-##read the initital SOFAR estimate
-dU = read.csv("dU.csv")
-V = read.csv("V.csv")
-dU = as.matrix(dU)
-V = as.matrix(V)
 
 ##############start debias procedure
 
@@ -182,8 +137,8 @@ uk = uk1; varuk = varuk1
 index = NULL
 len2 = 0
 zz = 2.81
-zz = 1.96
-# zz= 2.33
+
+
 
 dk = dk1; vardk = vardk1
 low_ci <- dk - sqrt(vardk)*zz/sqrt(n)
@@ -343,9 +298,9 @@ for(j in 1:p){
   p_values[j] <- 2 *( 1 - pnorm( abs(u1_std[j])))
 }
 bhq1 <- p.adjust(p_values, method = "BH")
-# 输出调整后的p值
+
 print(sort(bhq1))
-# 找出那些调整后的p值小于等于q的假设，表示可以拒绝原假设
+
 significant_hypotheses <- bhq1 <= 0.05
 length(which(significant_hypotheses == TRUE))
 
@@ -353,7 +308,7 @@ St12 = union( res1$St, res2$St)
 S123 = union(St12,  res3$St)
 length(S123)
 
-save.image(file = "real20230912.RData")
+
 
 
 
@@ -368,30 +323,3 @@ length(nonzero_uk1)
 length(nonzero_uk2)
 length(nonzero_uk3)
 
-##save data
-ukK = cbind(uk1,uk2,uk3)
-write.csv(ukK, file = "final_Uk.csv", row.names = F)
-write.csv(dU, file = "dU.csv", row.names = F)
-write.csv(V, file = "V.csv", row.names = F)
-
-nonzero_uk1 = res1$St
-nonzero_uk2 = res2$St
-nonzero_uk3 = res3$St
-
-
-datau <- matrix(0, nrow = dim(X)[1], ncol = dim(X)[2])
-datau[1, nonzero_uk1] = 1
-datau[2, nonzero_uk2] = 1
-datau[3, nonzero_uk3] = 1
-write.csv(datau, file = "plotX.csv")
-uk1_f <- uk1; uk1_f[-nonzero_uk1] = 0
-uk2_f <- uk2; uk2_f[-nonzero_uk2] = 0
-uk3_f <- uk3; uk3_f[-nonzero_uk3] = 0
-# uk1_f[nonzero_uk1] <- standarize_data(as.matrix(uk1_f[nonzero_uk1]))
-# uk2_f[nonzero_uk2] <- standarize_data(as.matrix(uk2_f[nonzero_uk2]))
-# uk3_f[nonzero_uk3] <- standarize_data(as.matrix(uk3_f[nonzero_uk3]))
-datauu <- cbind(uk1_f,uk2_f,uk3_f)
-
-#write.csv(datauu, file = "plotUU.csv")
-
-save.image(file = "realdata20231006.RData")

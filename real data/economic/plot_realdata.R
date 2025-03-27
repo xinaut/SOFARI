@@ -1,10 +1,10 @@
-setwd("D:/OneDrive/Rcode/SOFARI/jasa/real data/economic")
+setwd(".../economic")
 library(ggplot2)
 library(reshape2)
 library(ggrepel)
 library(ggfittext)
 
-load(file = "realdata20231006.RData")
+load(file = "realdata2.RData")
 ##datauu is the debiased estimate of matrix U
 df = as.data.frame(cbind(as.matrix(1:456), datauu)) #add an index colomn 1:456
 colnames(df) <- c("X", "F1", "F2", "F3")

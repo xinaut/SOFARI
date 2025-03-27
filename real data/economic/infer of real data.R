@@ -1,4 +1,4 @@
-load(file = "real20230912.RData")
+load(file = "realdata1.RData")
 #estimate
 X <- read.csv("final_XX.csv")
 Y <- read.csv("final_YY.csv")
@@ -213,7 +213,7 @@ St12 = union( res1$St, res2$St)
 S123 = union(St12,  res3$St)
 length(S123)
 
-save.image(file = "real20230912.RData")
+save.image(file = "realdata1.RData")
 
 
 
@@ -251,4 +251,4 @@ datauu <- cbind(uk1_f,uk2_f,uk3_f)
 
 #write.csv(datauu, file = "plotUU.csv")
 
-save.image(file = "realdata20231006.RData")
+save.image(file = "realdata2.RData")
