@@ -1,4 +1,4 @@
-##1. nearly case
+##1. strongly case
 #M
 Mk_nearly <- function(k, Xsigma, dU, V){
   z_kk = as.numeric(t(dU[, k])%*%Xsigma%*%dU[, k])
