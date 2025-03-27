@@ -9,7 +9,7 @@ The following scripts are used for processing the real datasets and performing i
    Splits the yeast dataset and runs both **SOFARI** and **SOFAR** methods to obtain prediction results.
 - load yeast2.RData to quickly obtain the inference results for all samples
 
-## Yeast c Data Analysis
+## Yeast eQTL Data Analysis
 
 The following scripts are used for processing the **yeast eQTL dataset** and performing inference:
 

@@ -1,4 +1,4 @@
-setwd("D:/OneDrive/Rcode/SOFARI/jasa/simulation")
+setwd(".../simulation")
 source("func_nearly.R")
 source("func_weakly.R")
 source("sim.R")
@@ -11,8 +11,7 @@ library(MASS)
 library(glmnet)
 library(foreach)
 library(doParallel)
-
-source("D:/OneDrive/Rcode/SOFARI/jasa/simulation/main of secure and sofar.R")
+source("main of secure and sofar.R")
 ###parallel
 start <- (proc.time())[3][[1]]
 no_cores <- detectCores(no_cores)-4
