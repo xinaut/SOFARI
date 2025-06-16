@@ -2,11 +2,7 @@
 
 This repository contains the reproducibility materials for the paper:
 
-**SOFARI: High-Dimensional Manifold-Based Inference**  
-
-Zemin Zheng, Xin Zhou, Yingying Fan, and Jinchi Lv  
-
-Available on arXiv: https://arxiv.org/abs/2309.15032
+**SOFARI: High-Dimensional Manifold-Based Inference** 
 
 ---
 
