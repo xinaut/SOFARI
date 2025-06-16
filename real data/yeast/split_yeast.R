@@ -1,3 +1,29 @@
+### Set working directory to the `SOFARI_code` folder of the reproducibility_materials
+### Please replace the path below with your own path containing the `SOFARI_code` folder, remove the `#`, and then run the following line
+# setwd("~/SOFARI_code")  ### <-- Replace this with your own path
+
+source("functions/func_strongly.R")
+source("functions/func_weakly.R")
+source("functions/adaptive_thresholding.R")
+source("functions/STRS.R")
+source("functions/nodewise_lasso.R")
+source("functions/functions_helper.R")
+library(rrpack)
+library(secure)
+library(MASS)
+library(glmnet)
+library(foreach)
+library(doParallel)
+library(flare)
+library(expm)
+
+#load the preprocessed data
+load("real data/yeast/yeast_preprocess_data.RData")
+n <- nrow(Y)
+q <- ncol(Y)
+p <- ncol(X)
+
+n_splits <- 100
 result_mat <- matrix(NA, nrow = n_splits, ncol = 2)
 colnames(result_mat) <- c("sofar_rv2", "sofar_ori")
 
@@ -7,7 +33,7 @@ n_train <- round(train_ratio * n)
 n_test <- n - n_train
 
 
-set.seed(2024)
+
 for (i in 1:n_splits) {
   train_idx <- sample(seq_len(n), size = n_train)
   test_idx <- setdiff(seq_len(n), train_idx)
@@ -78,15 +104,13 @@ for (i in 1:n_splits) {
   ))
 }
 
-std_values <- apply(result_mat, 2, sd, na.rm = TRUE)
-se_values <- std_values / sqrt(nrow(result_mat))
-std_values
+se_values <- apply(result_mat, 2, sd, na.rm = TRUE)/ sqrt(nrow(result_mat))
 se_values
 
 sofari <- function(X, Y){
   est_rank <- STRS(Y, X, type = "STRS-MC", rep_MC = 200, rank_tol = 1e-2, C = 2.01); est_rank
   n <- dim(X)[1]; p <- dim(X)[2]; q <- dim(Y)[2]
-  r = est_rank #r = 3
+  r = est_rank 
   fit1 <- sofar(Y, X, ic.type = "BIC", nrank = r,
                 control = list(methodA = "adlasso", methodB = "adlasso",
                                nlam = 200, lam.max.factor = 1500, lam.min.factor = 1e-12,
@@ -101,7 +125,7 @@ sofari <- function(X, Y){
   E_est = Y - X%*%C
   
   Sigmae_null = matrix(0, q, q) #no meaning
-  obj_sigmae <-  sim(p = q, n = n, delta = 2, thresholding = 'al', data = E_est, cov_true = Sigmae_null)
+  obj_sigmae <-  ada.thresholding(p = q, n = n, delta = 2, thresholding = 'al', data = E_est, cov_true = Sigmae_null)
   Sigmae <- obj_sigmae$cov_est
   
   Xsigma <- t(X)%*%X/n

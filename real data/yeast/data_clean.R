@@ -1,8 +1,11 @@
 ## This script is used to clean raw data and perform marginal screening
 ## The collected data is saved as "yeast_preprocess_data.RData"
 
-load("../yeast.rda")
+### Set working directory to the `SOFARI_code` folder of the reproducibility_materials
+### Please replace the path below with your own path containing the `SOFARI_code` folder, remove the `#`, and then run the following line
+# setwd("~/SOFARI_code/real data/yeast")  ### <-- Replace this with your own path
 
+load("yeast.rda")
 marker <- t(yeast$marker)
 n <- dim(marker)[1]
 p <-dim(marker)[2]
@@ -67,4 +70,4 @@ colnames(Y) <- genenames[geneid]
 n <- nrow(Y)
 q <- ncol(Y)
 p <- ncol(X)
-save(X,Y,file = "../output/yeast_preprocess_data.RData")
+save(X,Y,file = "yeast_preprocess_data.RData")

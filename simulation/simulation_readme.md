@@ -1,31 +1,10 @@
-## Reproducing the Simulation Studies
+# Simulation Code Description
 
-To reproduce the simulation studies presented in the paper, please refer to the following files:
+This folder contains the R scripts used to generate the simulation results presented in the paper.
 
-- **`result_sum.R`**  
-  This is the **main simulation script**, which performs **parallel computing** and **outputs the simulation results**.
+- `Figure 1 and Table 1.R`: Generates Figure 1 and Table 1 for Simulation Example 1.
+- `Table 4.R`: Generates Table 4 for Simulation Example 2.
+- `Table 5.R`: Generates Table 5 for Simulation Example 3.
 
-- **`main of secure and sofar.R`**  
-  This file contains the main functions for the **three simulation examples** in the paper:
-  - `pare_secure`: **Simulation Example 1**
-  - `pare_sofar`: **Simulation Example 2**
-  - `pare_sofar_nonsparse`: **Simulation Example 3**
-
-- **`functions.R`**  
-  Contains a collection of **basic utility functions** used across simulation scripts.
-
-- **`func_nearly.R`**  
-  Provides functions to **compute the distribution of strongly orthogonal factors**.
-
-- **`func_weakly.R`**  
-  Provides functions to **compute the distribution of weakly orthogonal factors**.
-
-- **`sim.R`**  
-  Estimates the **covariance matrix of random errors**  using **adaptive thresholding**.
-
-- **`STRS.R`**  
-  Estimates the **rank of multivariate response regression models**.
-
-- **`helpers.nodewise.R`**  
-  Estimates the **precision matrix** (i.e., the inverse of the covariance matrix).
+Each script can be run independently to reproduce the corresponding figure or table.
 
